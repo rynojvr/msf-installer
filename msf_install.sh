@@ -586,6 +586,7 @@ function usage ()
 
 function install_ruby_rvm
 {
+    MSF_RUBY_VERSION=$(curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/.ruby-version)
 
     if [[ ! -e ~/.rvm/scripts/rvm ]]; then
         print_status "Installing RVM"
@@ -600,17 +601,17 @@ function install_ruby_rvm
 
         if [[ $OSTYPE =~ darwin ]]; then
             print_status "Installing Ruby"
-            ~/.rvm/bin/rvm install ruby-1.9.3-p550 --with-gcc=clang --autolibs=4 --verify-downloads 1 >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm install $MSF_RUBY_VERSION --with-gcc=clang --autolibs=4 --verify-downloads 1 >> $LOGFILE 2>&1
         else
-            ~/.rvm/bin/rvm install ruby-1.9.3-p550 --autolibs=4 --verify-downloads 1 >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm install $MSF_RUBY_VERSION --autolibs=4 --verify-downloads 1 >> $LOGFILE 2>&1
         fi
 
         if [[ $? -eq 0 ]]; then
-            print_good "Installation of Ruby 1.9.3 was successful"
+            print_good "Installation of Ruby $MSF_RUBY_VERSION was successful"
 
-            ~/.rvm/bin/rvm use 1.9.3 --default >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm use $MSF_RUBY_VERSION --default >> $LOGFILE 2>&1
             print_status "Installing base gems"
-            ~/.rvm/bin/rvm 1.9.3 do gem install sqlite3 bundler >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do gem install sqlite3 bundler >> $LOGFILE 2>&1
             if [[ $? -eq 0 ]]; then
                 print_good "Base gems in the RVM Ruby have been installed."
             else
@@ -618,12 +619,12 @@ function install_ruby_rvm
                 exit 1
             fi
         else
-            print_error "Was not able to install Ruby 1.9.3!"
+            print_error "Was not able to install Ruby $MSF_RUBY_VERSION!"
             exit 1
         fi
     else
         print_status "RVM is already installed"
-        if [[ "$( ls -1 ~/.rvm/rubies/)" =~ ruby-1.9.3-p... ]]; then
+        if [[ "$( ls -1 ~/.rvm/rubies/)" =~ $MSF_RUBY_VERSION ]]; then
             print_status "Ruby for Metasploit is already installed"
         else
             PS1='$ '
@@ -633,14 +634,14 @@ function install_ruby_rvm
                 source ~/.bashrc
             fi
 
-            print_status "Installing Ruby 1.9.3 "
-            ~/.rvm/bin/rvm install ruby-1.9.3-p550  --autolibs=4 --verify-downloads 1  >> $LOGFILE 2>&1
+            print_status "Installing Ruby $MSF_RUBY_VERSION "
+            ~/.rvm/bin/rvm install $MSF_RUBY_VERSION  --autolibs=4 --verify-downloads 1  >> $LOGFILE 2>&1
             if [[ $? -eq 0 ]]; then
-                print_good "Installation of Ruby 1.9.3 was successful"
+                print_good "Installation of Ruby $MSF_RUBY_VERSION was successful"
 
-                ~/.rvm/bin/rvm use ruby-1.9.3-p550 --default >> $LOGFILE 2>&1
+                ~/.rvm/bin/rvm use $MSF_RUBY_VERSION --default >> $LOGFILE 2>&1
                 print_status "Installing base gems"
-                ~/.rvm/bin/rvm ruby-1.9.3-p550 do gem install sqlite3 bundler >> $LOGFILE 2>&1
+                ~/.rvm/bin/rvm $MSF_RUBY_VERSION do gem install sqlite3 bundler >> $LOGFILE 2>&1
                 if [[ $? -eq 0 ]]; then
                     print_good "Base gems in the RVM Ruby have been installed."
                 else
@@ -648,7 +649,7 @@ function install_ruby_rvm
                     exit 1
                 fi
             else
-                print_error "Was not able to install Ruby 1.9.3!"
+                print_error "Was not able to install Ruby $MSF_RUBY_VERSION!"
                 exit 1
             fi
         fi
