@@ -337,7 +337,35 @@ function install_deps_deb
 {
     print_status "Installing dependencies for Metasploit Framework"
     sudo apt-get -y update  >> $LOGFILE 2>&1
-    sudo apt-get -y install build-essential libreadline-dev  libssl-dev libpq5 libpq-dev libreadline5 libsqlite3-dev libpcap-dev openjdk-7-jre subversion git-core autoconf postgresql pgadmin3 curl zlib1g-dev libxml2-dev libxslt1-dev vncviewer libyaml-dev ruby1.9.3 sqlite3 ruby-dev libgdbm-dev libncurses5-dev libtool bison libffi-dev>> $LOGFILE 2>&1
+    sudo apt-get -y install \
+        build-essential \
+        libreadline-dev \
+        libssl-dev \
+        libpq5 \
+        libpq-dev \
+        libreadline5 \
+        libsqlite3-dev \
+        libpcap-dev \
+        openjdk-7-jre \
+        subversion \
+        git-core \
+        autoconf \
+        postgresql \
+        pgadmin3 \
+        curl \
+        zlib1g-dev \
+        libxml2-dev \
+        libxslt1-dev \
+        vncviewer \
+        libyaml-dev \
+        ruby1.9.3 \
+        sqlite3 \
+        ruby-dev \
+        libgdbm-dev \
+        libncurses5-dev \
+        libtool \
+        bison \
+        libffi-dev >> $LOGFILE 2>&1
     if [ $? -eq 1 ] ; then
         echo "---- Failed to download and install dependencies ----" >> $LOGFILE 2>&1
         print_error "Failed to download and install the dependencies for running Metasploit Framework"
