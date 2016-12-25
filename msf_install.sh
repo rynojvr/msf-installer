@@ -265,6 +265,7 @@ function install_postgresql_osx
 function install_msf_osx
 {
     print_status "Installing Metasploit Framework from the GitHub Repository"
+    MSF_RUBY_VERSION=$(curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/.ruby-version)
     if [[ ! -d /usr/local/share/metasploit-framework ]]; then
         print_status "Cloning latest version of Metasploit Framework"
         git clone https://github.com/rapid7/metasploit-framework.git /usr/local/share/metasploit-framework >> $LOGFILE 2>&1
@@ -292,8 +293,8 @@ function install_msf_osx
         cd /usr/local/share/metasploit-framework
         if [[ $RVM -eq 0 ]]; then
             print_status "Installing required ruby gems by Framework using bundler on RVM Ruby"
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do bundle install >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do bundle install >> $LOGFILE 2>&1
         else
             print_status "Installing required ruby gems by Framework using bundler on System Ruby"
             bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
@@ -301,7 +302,7 @@ function install_msf_osx
         fi
         print_status "Starting Metasploit so as to populate the database."
         if [[ $RVM -eq 0 ]]; then
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do ruby /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do ruby /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
         else
             /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
             print_status "Finished Metasploit installation"
@@ -445,6 +446,7 @@ function configure_psql_deb
 function install_msf_linux
 {
     print_status "Installing Metasploit Framework from the GitHub Repository"
+    MSF_RUBY_VERSION=$(curl https://raw.githubusercontent.com/rapid7/metasploit-framework/master/.ruby-version)
 
     if [[ ! -d /usr/local/share/metasploit-framework ]]; then
         print_status "Cloning latest version of Metasploit Framework"
@@ -496,8 +498,8 @@ function install_msf_linux
         cd /usr/local/share/metasploit-framework
         if [[ $RVM -eq 0 ]]; then
             print_status "Installing required ruby gems by Framework using bundler on RVM Ruby"
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do bundle install  >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do bundle install  >> $LOGFILE 2>&1
         else
             print_status "Installing required ruby gems by Framework using bundler on System Ruby"
             sudo bundle config build.nokogiri --use-system-libraries >> $LOGFILE 2>&1
@@ -505,7 +507,7 @@ function install_msf_linux
         fi
         print_status "Starting Metasploit so as to populate the database."
         if [[ $RVM -eq 0 ]]; then
-            ~/.rvm/bin/rvm ruby-1.9.3-p550 do ruby /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
+            ~/.rvm/bin/rvm $MSF_RUBY_VERSION do ruby /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
         else
             /usr/local/share/metasploit-framework/msfconsole -q -x "exit" >> $LOGFILE 2>&1
             print_status "Finished Metasploit installation"
@@ -695,8 +697,8 @@ if [ $INSTALL -eq 0 ]; then
         print_status "### RUN source ~/.bash_profile                                  ###"
         if [[ $RVM -eq 0 ]]; then
             print_status "###                                                             ###"
-            print_status "### INSTALLATION WAS USING RVM, SET 1.9.3 AS DEFAULT            ###"
-            print_status "### RUN rvm use ruby-1.9.3-p550 --default                       ###"
+            print_status "### INSTALLATION WAS USING RVM, SET $MSF_RUBY_VERSION AS DEFAULT            ###"
+            print_status "### RUN rvm use $MSF_RUBY_VERSION --default                       ###"
             print_status "###                                                             ###"
         fi
         print_status "###################################################################"
@@ -718,8 +720,8 @@ if [ $INSTALL -eq 0 ]; then
         print_status "### RUN source ~/.bashrc                                       ###"
         if [[ $RVM -eq 0 ]]; then
             print_status "###                                                            ###"
-            print_status "### INSTALLATION WAS USING RVM SET 1.9.3 AS DEFAULT            ###"
-            print_status "### RUN rvm use ruby-1.9.3-p550 --default                      ###"
+            print_status "### INSTALLATION WAS USING RVM SET $MSF_RUBY_VERSION AS DEFAULT            ###"
+            print_status "### RUN rvm use $MSF_RUBY_VERSION --default                      ###"
         fi
         print_status "### When launching teamserver and armitage with sudo use the   ###"
         print_status "### use the -E option to make sure the MSF Database variable   ###"
@@ -750,8 +752,8 @@ if [ $INSTALL -eq 0 ]; then
             print_status "### RUN source ~/.bashrc                                       ###"
             if [[ $RVM -eq 0 ]]; then
                 print_status "###                                                            ###"
-                print_status "### INSTALLATION WAS USING RVM SET 1.9.3-metasploit AS DEFAULT ###"
-                print_status "### RUN rvm use ruby-1.9.3-p550 default                        ###"
+                print_status "### INSTALLATION WAS USING RVM SET $MSF_RUBY_VERSION AS DEFAULT ###"
+                print_status "### RUN rvm use $MSF_RUBY_VERSION default                        ###"
             fi
             print_status "### When launching teamserver and armitage with sudo use the   ###"
             print_status "### use the -E option to make sure the MSF Database variable   ###"
