@@ -718,7 +718,7 @@ if [ $INSTALL -eq 0 ]; then
         install_nmap_osx
         install_postgresql_osx
         install_msf_osx
-        install_armitage_osx
+        #install_armitage_osx
         install_plugins_osx
 
         print_status "#################################################################"
@@ -743,7 +743,7 @@ if [ $INSTALL -eq 0 ]; then
         configure_psql_deb
         install_msf_linux
         install_plugins_linux
-        install_armitage_linux
+        #install_armitage_linux
         print_status "##################################################################"
         print_status "### YOU NEED TO RELOAD YOUR PROFILE BEFORE USE OF METASPLOIT!  ###"
         print_status "### RUN source ~/.bashrc                                       ###"
@@ -775,7 +775,7 @@ if [ $INSTALL -eq 0 ]; then
             configure_psql_deb
             install_msf_linux
             install_plugins_linux
-            install_armitage_linux
+            #install_armitage_linux
             print_status "##################################################################"
             print_status "### YOU NEED TO RELOAD YOUR PROFILE BEFORE USE OF METASPLOIT!  ###"
             print_status "### RUN source ~/.bashrc                                       ###"
