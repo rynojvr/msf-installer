@@ -338,34 +338,32 @@ function install_deps_deb
     print_status "Installing dependencies for Metasploit Framework"
     sudo apt-get -y update  >> $LOGFILE 2>&1
     sudo apt-get -y install \
+        autoconf \
+        bison \
         build-essential \
+        curl \
+        git-core \
+        libgdbm-dev \
+        libffi-dev \
+        libncurses5-dev \
         libreadline-dev \
         libssl-dev \
+        libpcap-dev \
         libpq5 \
         libpq-dev \
         libreadline5 \
         libsqlite3-dev \
-        libpcap-dev \
-        openjdk-7-jre \
-        subversion \
-        git-core \
-        autoconf \
-        postgresql \
-        pgadmin3 \
-        curl \
-        zlib1g-dev \
+        libtool \
         libxml2-dev \
         libxslt1-dev \
-        vncviewer \
         libyaml-dev \
-        ruby1.9.3 \
+        openjdk-7-jre \
+        pgadmin3 \
+        postgresql \
         sqlite3 \
-        ruby-dev \
-        libgdbm-dev \
-        libncurses5-dev \
-        libtool \
-        bison \
-        libffi-dev >> $LOGFILE 2>&1
+        subversion \
+        vncviewer \
+        zlib1g-dev >> $LOGFILE 2>&1
     if [ $? -eq 1 ] ; then
         echo "---- Failed to download and install dependencies ----" >> $LOGFILE 2>&1
         print_error "Failed to download and install the dependencies for running Metasploit Framework"
@@ -374,14 +372,14 @@ function install_deps_deb
         exit 1
     fi
     print_status "Finished installing the dependencies."
-    print_status "Installing base Ruby Gems"
-    sudo gem install wirble sqlite3 bundler >> $LOGFILE 2>&1
-    if [ $? -eq 1 ] ; then
-        echo "---- Failed to download and install base Ruby Gems ----" >> $LOGFILE 2>&1
-        print_error "Failed to download and install Ruby Gems for running Metasploit Framework"
-        exit 1
-    fi
-    print_status "Finished installing the base gems."
+    #print_status "Installing base Ruby Gems"
+    #sudo gem install wirble sqlite3 bundler >> $LOGFILE 2>&1
+    #if [ $? -eq 1 ] ; then
+    #    echo "---- Failed to download and install base Ruby Gems ----" >> $LOGFILE 2>&1
+    #    print_error "Failed to download and install Ruby Gems for running Metasploit Framework"
+    #    exit 1
+    #fi
+    #print_status "Finished installing the base gems."
 }
 #######################################
 
@@ -517,7 +515,7 @@ function install_msf_linux
   pool: 75
   timeout: 5' > /usr/local/share/metasploit-framework/config/database.yml"
         fi
-        print_status "setting environment variable in system profile. Password will be requiered"
+        print_status "setting environment variable in system profile. Password will be required"
         sudo sh -c "echo export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/config/database.yml >> /etc/environment"
         echo "export MSF_DATABASE_CONFIG=/usr/local/share/metasploit-framework/config/database.yml" >> ~/.bashrc
         PS1='$ '
@@ -606,7 +604,8 @@ function usage ()
 {
     echo "Script for Installing Metasploit Framework"
     echo "By Carlos_Perez[at]darkoperator.com"
-    echo "Ver 0.1.7"
+    echo "Updated by RynoJvR@gmail.com"
+    echo "Ver 0.2.0"
     echo ""
     echo "-i                :Install Metasploit Framework."
     echo "-p <password>     :password for Metasploit databse msf user. If not provided a random one is generated for you."
@@ -620,6 +619,8 @@ function install_ruby_rvm
 
     if [[ ! -e ~/.rvm/scripts/rvm ]]; then
         print_status "Installing RVM"
+
+        curl -sSL https://rvm.io/mpapis.asc | gpg --import -
 
         bash < <(curl -sSL https://get.rvm.io) >> $LOGFILE 2>&1
         PS1='$ '
